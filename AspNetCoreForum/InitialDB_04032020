@@ -5,7 +5,7 @@
 -- Dumped from database version 11.2
 -- Dumped by pg_dump version 11.2
 
--- Started on 2020-03-04 13:56:10
+-- Started on 2020-03-04 14:29:46
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -16,6 +16,36 @@ SELECT pg_catalog.set_config('search_path', '', false);
 SET check_function_bodies = false;
 SET client_min_messages = warning;
 SET row_security = off;
+
+--
+-- TOC entry 198 (class 1255 OID 24931)
+-- Name: messageaddoredit(integer, date, text, text, text, text, text); Type: PROCEDURE; Schema: public; Owner: postgres
+--
+
+CREATE PROCEDURE public.messageaddoredit(integer, date, text, text, text, text, text)
+    LANGUAGE plpgsql
+    AS $_$
+BEGIN
+	IF id = 0 THEN
+		INSERT INTO message(date,category,author,subject,content,status)
+		VALUES ($2,$3,$4,$5,$6,$7);
+	ELSE
+    	UPDATE message 
+    	SET date = $2,
+		category = $3,
+		author = $4,
+		subject = $5,
+		content = $6,
+		status = $7
+    	WHERE id = $1;
+ 	END IF;
+	
+    COMMIT;
+END;
+$_$;
+
+
+ALTER PROCEDURE public.messageaddoredit(integer, date, text, text, text, text, text) OWNER TO postgres;
 
 SET default_tablespace = '';
 
@@ -56,7 +86,7 @@ CREATE SEQUENCE public.message_id_seq
 ALTER TABLE public.message_id_seq OWNER TO postgres;
 
 --
--- TOC entry 2815 (class 0 OID 0)
+-- TOC entry 2816 (class 0 OID 0)
 -- Dependencies: 196
 -- Name: message_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -65,7 +95,7 @@ ALTER SEQUENCE public.message_id_seq OWNED BY public.message.id;
 
 
 --
--- TOC entry 2686 (class 2604 OID 24921)
+-- TOC entry 2687 (class 2604 OID 24921)
 -- Name: message id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -73,7 +103,7 @@ ALTER TABLE ONLY public.message ALTER COLUMN id SET DEFAULT nextval('public.mess
 
 
 --
--- TOC entry 2809 (class 0 OID 24918)
+-- TOC entry 2810 (class 0 OID 24918)
 -- Dependencies: 197
 -- Data for Name: message; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -83,7 +113,7 @@ COPY public.message (id, date, category, author, subject, content, status) FROM 
 
 
 --
--- TOC entry 2816 (class 0 OID 0)
+-- TOC entry 2817 (class 0 OID 0)
 -- Dependencies: 196
 -- Name: message_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -91,7 +121,7 @@ COPY public.message (id, date, category, author, subject, content, status) FROM 
 SELECT pg_catalog.setval('public.message_id_seq', 1, false);
 
 
--- Completed on 2020-03-04 13:56:10
+-- Completed on 2020-03-04 14:29:46
 
 --
 -- PostgreSQL database dump complete
