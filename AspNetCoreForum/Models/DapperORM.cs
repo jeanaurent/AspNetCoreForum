@@ -29,5 +29,14 @@ namespace AspNetCoreForum.Models
                 return (T)Convert.ChangeType(sqlCon.Execute(procedureName, param, commandType: CommandType.StoredProcedure),typeof(T));
             }
         }
+
+        public static IEnumerable<T> ReturnList<T>(string procedureName, DynamicParameters param)
+        {
+            using (NpgsqlConnection sqlCon = new NpgsqlConnection(ConnectionString))
+            {
+                sqlCon.Open();
+                return sqlCon.Query<T>(procedureName, param, commandType: CommandType.StoredProcedure);
+            }
+        }
     }
 }
