@@ -10,7 +10,7 @@ namespace AspNetCoreForum.Models
 {
     public static class DapperORM
     {
-        private static string ConnectionString = @"Data Source=localhost;port=5432;Pooling=true;Initial Catalog=ShopDB;User Id= postgres;Password=SunWave2019!;SslMode=none;";
+        private static string ConnectionString = @"Data Source=localhost;port=5432;Pooling=true;Initial Catalog=AspForumDB;User Id= postgres;Password=SunWave2019!;SslMode=none;";
     
         public static void ExecuteWithoutReturn(string procedureName, DynamicParameters param)
         {
