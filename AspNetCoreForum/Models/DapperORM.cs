@@ -2,6 +2,7 @@
 using Npgsql;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -13,7 +14,11 @@ namespace AspNetCoreForum.Models
     
         public static void ExecuteWithoutReturn(string procedureName, DynamicParameters param)
         {
-            using(NpgsqlConnection )
+            using(NpgsqlConnection sqlCon = new NpgsqlConnection(ConnectionString))
+            {
+                sqlCon.Open();
+                sqlCon.Execute(procedureName, param, commandType : CommandType.StoredProcedure);
+            }
         }
     }
 }
