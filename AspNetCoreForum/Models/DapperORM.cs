@@ -33,20 +33,20 @@ namespace AspNetCoreForum.Models
         {
             try
             {
-                string sql3 = @"messageallw";
+                //string sql3 = @"messageallw";
 
                 using (NpgsqlConnection sqlCon = new NpgsqlConnection(ConnectionString))
                 {
                     
                     sqlCon.Open();
-                  //  return sqlCon.Query<T>("messageall", null, commandType: CommandType.Text);
+                   return sqlCon.Query<T>("messageallw", param, commandType: CommandType.StoredProcedure);
 
-                    NpgsqlCommand pgcom = new NpgsqlCommand(sql3, sqlCon);
-                    pgcom.CommandType = CommandType.StoredProcedure;
+                  //  NpgsqlCommand pgcom = new NpgsqlCommand(sql3, sqlCon);
+                 //   pgcom.CommandType = CommandType.StoredProcedure;
                    // pgcom.Parameters.AddWithValue(":pEmail", "myemail@hotmail.com");
                   //  pgcom.Parameters.AddWithValue(":pPassword", "eikaylie78");
-                    NpgsqlDataReader pgreader = pgcom.ExecuteReader();
-                    return null;
+                  //  NpgsqlDataReader pgreader = pgcom.ExecuteReader();
+                  //  return null;
                 }
             }
             catch (Exception Ex) {
