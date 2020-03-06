@@ -10,9 +10,8 @@ namespace AspNetCoreForum.Models
 {
     public static class DapperORM
     {
-        private static string ConnectionString = @"Data Source=localhost;port=5432;Pooling=true;Initial Catalog=ShopDB;User Id= postgres;Password=SunWave2019!;SslMode=none;";
-    
-        public static void ExecuteWithoutReturn(string procedureName, DynamicParameters param)
+        private static string ConnectionString = @"User ID=postgres;Password=SunWave2019!;Host=localhost;Port=5432;Database=AspForumDB;Pooling=true;";
+        public static void ExecuteWithoutReturn(string procedureName, DynamicParameters param = null)
         {
             using(NpgsqlConnection sqlCon = new NpgsqlConnection(ConnectionString))
             {
@@ -21,7 +20,7 @@ namespace AspNetCoreForum.Models
             }
         }
 
-        public static T ExecuteReturnScalar<T>(string procedureName, DynamicParameters param)
+        public static T ExecuteReturnScalar<T>(string procedureName, DynamicParameters param = null)
         {
             using (NpgsqlConnection sqlCon = new NpgsqlConnection(ConnectionString))
             {
@@ -30,12 +29,29 @@ namespace AspNetCoreForum.Models
             }
         }
 
-        public static IEnumerable<T> ReturnList<T>(string procedureName, DynamicParameters param)
+        public static IEnumerable<T> ReturnList<T>(string procedureName, DynamicParameters param = null)
         {
-            using (NpgsqlConnection sqlCon = new NpgsqlConnection(ConnectionString))
+            try
             {
-                sqlCon.Open();
-                return sqlCon.Query<T>(procedureName, param, commandType: CommandType.StoredProcedure);
+                //string sql3 = @"messageallw";
+
+                using (NpgsqlConnection sqlCon = new NpgsqlConnection(ConnectionString))
+                {
+                    
+                    sqlCon.Open();
+                   return sqlCon.Query<T>("messageallw", param, commandType: CommandType.StoredProcedure);
+
+                  //  NpgsqlCommand pgcom = new NpgsqlCommand(sql3, sqlCon);
+                 //   pgcom.CommandType = CommandType.StoredProcedure;
+                   // pgcom.Parameters.AddWithValue(":pEmail", "myemail@hotmail.com");
+                  //  pgcom.Parameters.AddWithValue(":pPassword", "eikaylie78");
+                  //  NpgsqlDataReader pgreader = pgcom.ExecuteReader();
+                  //  return null;
+                }
+            }
+            catch (Exception Ex) {
+                Console.WriteLine(Ex.Message);
+                return null;
             }
         }
     }
